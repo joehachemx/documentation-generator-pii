@@ -1,5 +1,7 @@
-function readAndExtract(file) {
-    const fs = require('fs');
+const fs = require('fs');
+const ConvertToMarkdown = require('./prototype2').ConvertToMarkdown;
+
+function readAndExtract(file, callback) {
 
     let objectKeyReg = /@(\w+)\b/
     
@@ -10,10 +12,8 @@ function readAndExtract(file) {
 
         const lines = data.split('\n');
     
-        // console.log(lines)
-    
         lines.forEach((line) => {
-            if (line != "") { // aw on les enleve avant mais mej de check cmt
+            if (line != "") {
                 let objectValueReg;
                 try {
                     objectValueReg = `@${objectKeyReg.exec(line)[1]}="(.*?)"`
@@ -41,12 +41,14 @@ function readAndExtract(file) {
             }
         });
 
-        console.log(object)
-        return object
+        callback(object);
     });
 }
 
-readAndExtract("test.hoe")
+readAndExtract("test.hoe", (object) => {
+    ConvertToMarkdown(object)
+});
+
 
 // task learn how regex works
 // clean code c'est pas optimal mais ca marche

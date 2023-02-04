@@ -1,19 +1,19 @@
 const fs = require("fs");
 
-object = {
-    title: "Project Title",
-    version: "1.2.3",
-    date: "12-09-2023",
-    author: ["Michelle Metni", "Jameel Nakhle","Jenniffer Farah","Rami Moussally"],
-    email:["michellemetni@gmail.com","jameelxnakhle@gmail.com","jennyfarah2@gmail.com"],
-    description:"I love coding Project PII Is fun. Hi Jenny, How are you today? Are you good? Yeah Im good. BarTartine rating for the cappuchino: 5stars. Rami aam bi oul eno Chez Paul el cappuchino atyab",
-    requirements: ["Packages","Hiyen","Jenny is the best"]
-}
+// object = {
+//     title: "Project Title",
+//     version: "1.2.3",
+//     date: "12-09-2023",
+//     author: ["Michelle Metni", "Jameel Nakhle","Jenniffer Farah","Rami Moussally"],
+//     email:["michellemetni@gmail.com","jameelxnakhle@gmail.com","jennyfarah2@gmail.com"],
+//     description:"I love coding Project PII Is fun. Hi Jenny, How are you today? Are you good? Yeah Im good. BarTartine rating for the cappuchino: 5stars. Rami aam bi oul eno Chez Paul el cappuchino atyab",
+//     requirements: ["Packages","Hiyen","Jenny is the best"]
+// }
 
 
 function ConvertToMarkdown(object){
 
-    function heading(){
+    function heading(object){
         if (object.title != ""){
             if (object.version != ""){
                 if (object.date != ""){
@@ -39,22 +39,24 @@ function ConvertToMarkdown(object){
             }
     }
     function authors(object) {
-        let authors_array=object.author;
+        let authors_array=object.authors;
         if (authors_array.length>=1){
-            if (authors_array.length > 1) {
-                titre = "Authors";
-            } else {
-                titre = "Author";
-            }fs.appendFileSync("manuscript.md", `<h2> ${titre} : </h2> <br> `)
-            for (let i=0; i<authors_array.length; i++) {
-                if (object.email[i] != null){
-                    fs.appendFileSync("manuscript.md",`\n\n * ${object.author[i]}, ${object.email[i]}`)
+                if (authors_array.length > 1) {
+                    titre = "Authors";
+                } else {
+                    titre = "Author";
+                }fs.appendFileSync("manuscript.md", `<h2> ${titre} : </h2> <br> `)
+                for (let i=0; i<authors_array.length; i++) {
+                    if (object.mail[i] != null){
+                        fs.appendFileSync("manuscript.md",`\n\n * ${object.authors[i]}, ${object.mail[i]}`)
+                    }
+                    else {
+                        fs.appendFileSync("manuscript.md",`\n\n * ${object.authors[i]}`)
+                    }
                 }
-                else {
-                    fs.appendFileSync("manuscript.md",`\n\n * ${object.author[i]}`)
-                }
-            }
         }
+        
+
     }
     function description(object) {
         let description_string=object.description
@@ -75,20 +77,21 @@ function ConvertToMarkdown(object){
             } 
         }
     }
-heading(object)
-authors(object)
-description(object)
-requirements(object)
+    heading(object)
+    authors(object)
+    description(object)
+    requirements(object)
 }
 
 
 
 
 
-ConvertToMarkdown(object2)
+// ConvertToMarkdown(object2)
 
 
 //REFRENCES:
 //HEADING:fs.writeFileSync("manuscript.md", `<center> <h1> ${object.title} </h1><h3> Version: ${object.version} </h3><h4> ${object.date} </h4></center><br>`)
 
 
+module.exports = { ConvertToMarkdown };
