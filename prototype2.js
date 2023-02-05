@@ -1,16 +1,5 @@
 const fs = require("fs");
 
-// object = {
-//     title: "Project Title",
-//     version: "1.2.3",
-//     date: "12-09-2023",
-//     author: ["Michelle Metni", "Jameel Nakhle","Jenniffer Farah","Rami Moussally"],
-//     email:["michellemetni@gmail.com","jameelxnakhle@gmail.com","jennyfarah2@gmail.com"],
-//     description:"I love coding Project PII Is fun. Hi Jenny, How are you today? Are you good? Yeah Im good. BarTartine rating for the cappuchino: 5stars. Rami aam bi oul eno Chez Paul el cappuchino atyab",
-//     requirements: ["Packages","Hiyen","Jenny is the best"]
-// }
-
-
 function ConvertToMarkdown(object){
 
     function heading(object){
@@ -55,9 +44,8 @@ function ConvertToMarkdown(object){
                     }
                 }
         }
-        
-
     }
+    
     function description(object) {
         let description_string=object.description
         if (description_string.length >0) {
@@ -82,16 +70,5 @@ function ConvertToMarkdown(object){
     description(object)
     requirements(object)
 }
-
-
-
-
-
-// ConvertToMarkdown(object2)
-
-
-//REFRENCES:
-//HEADING:fs.writeFileSync("manuscript.md", `<center> <h1> ${object.title} </h1><h3> Version: ${object.version} </h3><h4> ${object.date} </h4></center><br>`)
-
 
 module.exports = { ConvertToMarkdown };
