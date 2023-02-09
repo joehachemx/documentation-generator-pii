@@ -1,8 +1,7 @@
 const fs = require('fs');
-const ConvertToMarkdown = require('./prototype2').ConvertToMarkdown;
+const convertToMdFolder = require('./convertToMdFolder').convertToMdFolder;
 
-function readAndExtract(file, callback) {
-
+function folderParser(file, callback) {
     let objectKeyReg = /@(\w+)\b/
     
     let object = {}
@@ -45,8 +44,9 @@ function readAndExtract(file, callback) {
     });
 }
 
-readAndExtract("test.hoe", (object) => {
-    ConvertToMarkdown(object)
+folderParser("test.abc", (object) => {
+    console.log(object)
+    convertToMdFolder(object)
 });
 
 
