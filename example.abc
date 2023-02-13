@@ -1,0 +1,16 @@
+
+DATA A NE PAS PRENDRE EN CONSIDERATION
+DATA A NE PAS PRENDRE EN CONSIDERATION
+
+# @startfunc
+# this function is useless
+def jennifer():
+    if pierre == cedric: # checks something useless
+        print("bayyak")
+    else:
+        print("emmak")
+# @endfunc
+
+DATA A NE PAS PRENDRE EN CONSIDERATION
+DATA A NE PAS PRENDRE EN CONSIDERATION
+DATA A NE PAS PRENDRE EN CONSIDERATION
