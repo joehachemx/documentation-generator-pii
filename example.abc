@@ -2,15 +2,25 @@
 DATA A NE PAS PRENDRE EN CONSIDERATION
 DATA A NE PAS PRENDRE EN CONSIDERATION
 
-# @startfunc
-# this function is useless
+# @<r500
+# @/w500 this function is useless
 def jennifer():
-    if pierre == cedric: # checks something useless
-        print("bayyak")
+    # @<r400
+    if pierre == cedric: # @/rw checks something useless
+        print("test1")
     else:
-        print("emmak")
-# @endfunc
+        print("test2") # @/r
+    # @r>400
+    print("test3")
+# @r>500
 
 DATA A NE PAS PRENDRE EN CONSIDERATION
 DATA A NE PAS PRENDRE EN CONSIDERATION
 DATA A NE PAS PRENDRE EN CONSIDERATION
+
+def sebastien():
+    while i != 0:
+        print("hello")
+    return 10
+
+@/w400 tset test 
