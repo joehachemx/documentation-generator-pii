@@ -1,0 +1,46 @@
+{
+  "name": "pii-documentation-generator",
+  "displayName": "pii-documentation-generator",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": ["onCommand:extension.showTextField", "onCommand:extension.callParserNConverter"],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [{
+      "command": "pii-documentation-generator.helloWorld",
+      "title": "Hello World"
+    }],
+    "keybindings": [
+      {
+        "command": "extension.showTextField",
+        "key": "cmd+h"
+      },
+      {
+        "command": "extension.callParserNConverter",
+        "key": "cmd+shift+h"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "eslint": "^8.34.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^4.9.5",
+    "@vscode/test-electron": "^2.2.3"
+  }
+}
