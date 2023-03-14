@@ -1,20 +1,57 @@
 const fs = require("fs");
 
-object={
-    "let a=8;Σif(a>6) {Σ    console.log(\"Hello world \");Σ    a=7Σ}":"This code outputs Hello World if the value of a is greater than 6",
-    "let a=7":"this stores 7 in a variable called a",
-    "let s=0 Σlet n=10 Σfor (let i=0; i<=n, i++,) {Σ    if (n%2==0){Σ       s=s+1Σ      }Σ   }" : "hi this is a comment for the code above."
-}
-
-function filetoMD(object){
-    fs.writeFileSync("documentation2.md","")
-    for (const key in object){
-        code=key.replace(/Σ/g, "\n");
-fs.appendFileSync("documentation2.md",`~~~js
-${code}
-~~~ \n
-${object[key]}\n\n<br>\n\n`)
+let arrayOfItemCodes = 
+[
+    itemCode ={
+      id: '500',
+      code: '\n' +
+        '# @/w500 this function is useless\n' +
+        'def jennifer():\n' +
+        '    # @<r400\n' +
+        '    if pierre == cedric: # @/rw checks something useless\n' +
+        '        print("test1")\n' +
+        '    else:\n' +
+        '        print("test2") # @/r\n' +
+        '    # @r>400\n' +
+        '    print("test3")\n' +
+        '# ',
+      explication: 'this function is useless'
+    },
+    itemCode ={
+      id: '400',
+      code: '\n' +
+        '    if pierre == cedric: # @/rw checks something useless\n' +
+        '        print("test1")\n' +
+        '    else:\n' +
+        '        print("test2") # @/r\n' +
+        '    # ',
+      explication: 'tset test'
+    },
+    itemCode ={
+      id: undefined,
+      code: 'if pierre == cedric: #',
+      explication: ' checks something useless'
     }
+  ]
+
+
+
+function convertToMDFile(arrayOfItemCodes) {
+    function creatMDfile() {
+        fs.writeFileSync("markdownfile.md","")
+    }
+    function codeblock(){
+        for (let itemCode of arrayOfItemCodes){
+            fs.appendFileSync("markdownfile.md",`
+~~~js
+${itemCode.code}
+~~~ 
+${itemCode.explication}<br> <br>
+`)
+        }
+    }
+    creatMDfile()
+    codeblock()
 }
 
-filetoMD(object)
+convertToMDFile(arrayOfItemCodes)
