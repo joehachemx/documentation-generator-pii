@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-function fileParser(file) {
+function fileParser(file, _callback) {
     let arrayOfItemCode = []
 
     let regStart = /(?<=@<r)\w+/
@@ -26,7 +26,6 @@ function fileParser(file) {
                         arrayOfItemCode[i].explication = reggg.exec(line)[2].trim()
                     }
                 }
-
 
                 // prend le cas ou prend le cas ou on met ca avant de initialise code
                 // implement "if present"
@@ -68,9 +67,12 @@ function fileParser(file) {
         })
 
 
-        console.log()
-        console.log(arrayOfItemCode)
+        // console.log()
+        // console.log(arrayOfItemCode)
+        _callback(arrayOfItemCode)
+        // return arrayOfItemCode
     })
+
 }
 
 
@@ -90,55 +92,12 @@ class itemCode {
     }
 }
 
-/*
-parser, lama il trouve un nv id 
-il check sil existe dans array
-    si existe, il update
-    sinon il create a new itemcode object
-
-to get start id (?<=@<r)\w+
-to get finish id (?<=@r>)\w+
-
-
-
-je extract mnel data block a block of code puis je le format
-regex /@<r500([\s\S]*?)@r>500/
-
-
-get text id @\/?w(\d+)
-@\/?w(\d+)(.*?)$ use this
-
-
-get same line text:
-^([^@]*)@\/rw(.*)$
-check if @/rw exists, take data w create random id that dont exists
-
-
-
-
-to do:
-- format the data !!!
-- support mutliple explication on seperate lines
-
-
-
-*/
-
-
 
 function formatter(itemCode) {
     console.log(itemCode.code)
-
-
-
-
     
     return itemCode
 }
-
-
-
-fileParser("example.abc")
 
 
 module.exports = { fileParser };
