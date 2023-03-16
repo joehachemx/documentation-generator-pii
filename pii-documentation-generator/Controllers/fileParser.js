@@ -9,7 +9,6 @@ function fileParser(file, _callback) {
     fs.readFile(file, 'utf-8', (err, data) => {
         if (err) throw err;
 
-        let isReadingFunction = false
         let thisID;
 
         const lines = data.split('\n');
@@ -56,10 +55,16 @@ function fileParser(file, _callback) {
                 if (!isPresent) {
                     let item = new itemCode(thisID)
 
-                    let customRegID = `(?<=@<r${thisID})[\\s\\S]*?(?=@r>${thisID})`
+                    // let customRegID = `(?<=@<r${thisID})[\\s\\S]*?(?=@r>${thisID})`
+                    let customRegID = `@<r${thisID}\\s+([^@\n]+)\n\\s*([\\s\\S]*?)\\s*@r>${thisID}`
                     customRegID = new RegExp(customRegID)
 
-                    item.code = customRegID.exec(data)[0] // format avant de put ici
+                    // console.log(customRegID)
+                    console.log("regexid: ", customRegID.exec(data)[1])
+                    console.log("regexid: ", customRegID.exec(data)[2])
+
+                    item.code = customRegID.exec(data)[2] // format avant de put ici
+                    item.explication = customRegID.exec(data)[1]
                     
                     arrayOfItemCode.push(item)
                 }
@@ -67,8 +72,6 @@ function fileParser(file, _callback) {
         })
 
 
-        // console.log()
-        // console.log(arrayOfItemCode)
         _callback(arrayOfItemCode)
         // return arrayOfItemCode
     })
@@ -76,6 +79,8 @@ function fileParser(file, _callback) {
 }
 
 
+// @<r100\s+([^@\n]+)\n\s*([\s\S]*?)\s*@r>100
+// /@<r100s+([^@\n]+)\n\s*([\s\S]*?)s*@r>100/
 
 
 // rah ejwe le code, a arranger avant de commit
