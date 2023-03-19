@@ -22,12 +22,7 @@ function activate(context) {
 		// Show an input box to the user
 		vscode.window.showInputBox({
 		prompt: "Enter your text"
-		}).then(function (inputText) {
-		// Log the entered text to the console
-		// console.log("Entered text: " + inputText);
-			// selection.explication = inputText
-
-			
+		}).then(function (inputText) {			
 			editor.edit(editBuilder => {
 				if (inputText != undefined) {
 

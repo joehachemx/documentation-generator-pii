@@ -60,8 +60,8 @@ function fileParser(file, _callback) {
                     customRegID = new RegExp(customRegID)
 
                     // console.log(customRegID)
-                    console.log("regexid: ", customRegID.exec(data)[1])
-                    console.log("regexid: ", customRegID.exec(data)[2])
+                    // console.log("regexid: ", customRegID.exec(data)[1])
+                    // console.log("regexid: ", customRegID.exec(data)[2])
 
                     item.code = customRegID.exec(data)[2] // format avant de put ici
                     item.explication = customRegID.exec(data)[1]
