@@ -19,11 +19,15 @@
     "keybindings": [
       {
         "command": "extension.showTextField",
-        "key": "cmd+h"
+        "key": "ctrl+h",
+        "mac": "cmd+h",
+        "linux": "ctrl+h"
       },
       {
         "command": "extension.callParserNConverter",
-        "key": "cmd+shift+h"
+        "key": "ctrl+shift+h",
+        "mac": "cmd+shift+h",
+        "linux": "ctrl+shift+h"
       }
     ]
   },

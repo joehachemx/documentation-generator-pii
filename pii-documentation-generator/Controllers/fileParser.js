@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-function fileParser(file) {
+function fileParser(file, _callback) {
     let arrayOfItemCode = []
 
     let regStart = /(?<=@<r)\w+/
@@ -9,7 +9,6 @@ function fileParser(file) {
     fs.readFile(file, 'utf-8', (err, data) => {
         if (err) throw err;
 
-        let isReadingFunction = false
         let thisID;
 
         const lines = data.split('\n');
@@ -26,7 +25,6 @@ function fileParser(file) {
                         arrayOfItemCode[i].explication = reggg.exec(line)[2].trim()
                     }
                 }
-
 
                 // prend le cas ou prend le cas ou on met ca avant de initialise code
                 // implement "if present"
@@ -57,10 +55,16 @@ function fileParser(file) {
                 if (!isPresent) {
                     let item = new itemCode(thisID)
 
-                    let customRegID = `(?<=@<r${thisID})[\\s\\S]*?(?=@r>${thisID})`
+                    // let customRegID = `(?<=@<r${thisID})[\\s\\S]*?(?=@r>${thisID})`
+                    let customRegID = `@<r${thisID}\\s+([^@\n]+)\n\\s*([\\s\\S]*?)\\s*@r>${thisID}`
                     customRegID = new RegExp(customRegID)
 
-                    item.code = customRegID.exec(data)[0] // format avant de put ici
+                    // console.log(customRegID)
+                    // console.log("regexid: ", customRegID.exec(data)[1])
+                    // console.log("regexid: ", customRegID.exec(data)[2])
+
+                    item.code = customRegID.exec(data)[2] // format avant de put ici
+                    item.explication = customRegID.exec(data)[1]
                     
                     arrayOfItemCode.push(item)
                 }
@@ -68,12 +72,15 @@ function fileParser(file) {
         })
 
 
-        console.log()
-        console.log(arrayOfItemCode)
+        _callback(arrayOfItemCode)
+        // return arrayOfItemCode
     })
+
 }
 
 
+// @<r100\s+([^@\n]+)\n\s*([\s\S]*?)\s*@r>100
+// /@<r100s+([^@\n]+)\n\s*([\s\S]*?)s*@r>100/
 
 
 // rah ejwe le code, a arranger avant de commit
@@ -90,55 +97,12 @@ class itemCode {
     }
 }
 
-/*
-parser, lama il trouve un nv id 
-il check sil existe dans array
-    si existe, il update
-    sinon il create a new itemcode object
-
-to get start id (?<=@<r)\w+
-to get finish id (?<=@r>)\w+
-
-
-
-je extract mnel data block a block of code puis je le format
-regex /@<r500([\s\S]*?)@r>500/
-
-
-get text id @\/?w(\d+)
-@\/?w(\d+)(.*?)$ use this
-
-
-get same line text:
-^([^@]*)@\/rw(.*)$
-check if @/rw exists, take data w create random id that dont exists
-
-
-
-
-to do:
-- format the data !!!
-- support mutliple explication on seperate lines
-
-
-
-*/
-
-
 
 function formatter(itemCode) {
     console.log(itemCode.code)
-
-
-
-
     
     return itemCode
 }
-
-
-
-fileParser("example.abc")
 
 
 module.exports = { fileParser };

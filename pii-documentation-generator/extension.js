@@ -3,6 +3,7 @@
 const vscode = require('vscode');
 var path = require("path");
 const fileParser = require('./Controllers/fileParser');
+const fileToMD = require('./Controllers/filetoMD');
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -21,12 +22,7 @@ function activate(context) {
 		// Show an input box to the user
 		vscode.window.showInputBox({
 		prompt: "Enter your text"
-		}).then(function (inputText) {
-		// Log the entered text to the console
-		// console.log("Entered text: " + inputText);
-			// selection.explication = inputText
-
-			
+		}).then(function (inputText) {			
 			editor.edit(editBuilder => {
 				if (inputText != undefined) {
 
@@ -81,8 +77,10 @@ function activate(context) {
 			// Get the file path from the URI
 			const filePath = uri.path;
 
-			console.log(filePath);
-			fileParser.fileParser(filePath);
+			fileParser.fileParser(filePath, fileToMD.convertToMDFile)
+
+			// let extractedData = fileParser.fileParser(filePath);
+			// fileToMD.convertToMDFile(extractedData)
 		}
 		// var currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath);
 
