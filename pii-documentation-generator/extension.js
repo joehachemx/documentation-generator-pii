@@ -4,6 +4,7 @@ const vscode = require('vscode');
 var path = require("path");
 const fileParser = require('./Controllers/fileParser');
 const fileToMD = require('./Controllers/filetoMD');
+const gptController = require('./Controllers/gptController');
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -85,10 +86,19 @@ function activate(context) {
 		// var currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath);
 
 	})
+
+		let gptAPI = vscode.commands.registerCommand("extension.gptAPI", function () {
+			console.log("gpt API")
+
+			gptController.runCompletion()
+		
+		
+		})
   
 	// Register the command to the keyboard shortcut
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(callParserNConverter);
+	context.subscriptions.push(gptAPI);
   }
 
 
