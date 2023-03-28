@@ -87,13 +87,61 @@ function activate(context) {
 
 	})
 
-		let gptAPI = vscode.commands.registerCommand("extension.gptAPI", function () {
+		let gptAPI = vscode.commands.registerCommand("extension.gptAPI", async function () {
 			console.log("gpt API")
 
 			let editor = vscode.window.activeTextEditor;
 
+			let codeExplication = await gptController.runCompletion(editor.document.getText(editor.selection))
 
-			gptController.runCompletion(editor.document.getText(editor.selection))
+			codeExplication = codeExplication.trim()
+
+
+
+			editor.edit(editBuilder => {
+
+				let id = Math.floor(Math.random() * (100 - 0 + 1)) + 0
+				while (id in everyIDGenerated) {
+					id = Math.floor(Math.random() * (100 - 0 + 1)) + 0
+				}
+				everyIDGenerated.push(id)
+	
+	
+				if (editor.selection.start.line === editor.selection.end.line) {
+					codeExplication = " " + checkLanguage() + " @/w" + `${id}` + " " +  codeExplication 
+				} else {
+					codeExplication = checkLanguage() + " @<r" + `${id}` + " " + codeExplication
+				}
+	
+	
+	
+	
+				closingText = checkLanguage() + " @r>" + `${id}`
+				
+				let newText;
+	
+				if (editor.selection.start.line === editor.selection.end.line) {
+					newText = `${editor.document.getText(editor.selection)}` + `${codeExplication}` 
+				} else {
+					newText = `${codeExplication}` + '\n' + `${editor.document.getText(editor.selection)}` + '\n' + `${closingText}`
+				}
+				
+	
+				const selections = editor.selections; // to handle mutliple selection
+				for (const selection of selections) {
+					editBuilder.replace(selection, newText);
+				}
+	
+
+			})
+
+			
+
+
+
+
+
+
 		})
   
 	// Register the command to the keyboard shortcut
