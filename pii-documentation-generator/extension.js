@@ -90,9 +90,10 @@ function activate(context) {
 		let gptAPI = vscode.commands.registerCommand("extension.gptAPI", function () {
 			console.log("gpt API")
 
-			gptController.runCompletion()
-		
-		
+			let editor = vscode.window.activeTextEditor;
+
+
+			gptController.runCompletion(editor.document.getText(editor.selection))
 		})
   
 	// Register the command to the keyboard shortcut

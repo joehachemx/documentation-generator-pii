@@ -6,21 +6,21 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-async function runCompletion () {
+async function runCompletion (prompt) {
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: `
-    Hello, how are you?
+    Write me a small documentation about this code
+    ###
+    ${prompt}
     ###
     `,
     temperature: 0,
     top_p: 1.0,
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
-    stop: ["\n"],
   })
-  console.log(completion.data.choices[0].text)
-  
+  console.log(completion.data)
 }
 
 // runCompletion();
