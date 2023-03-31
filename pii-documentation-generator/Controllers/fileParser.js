@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-function fileParser(file, _callback) {
+function fileParser(file, writePath, fileName ,_callback) {
     let arrayOfItemCode = []
 
     let regStart = /(?<=@<r)\w+/
@@ -55,13 +55,8 @@ function fileParser(file, _callback) {
                 if (!isPresent) {
                     let item = new itemCode(thisID)
 
-                    // let customRegID = `(?<=@<r${thisID})[\\s\\S]*?(?=@r>${thisID})`
                     let customRegID = `@<r${thisID}\\s+([^@\n]+)\n\\s*([\\s\\S]*?)\\s*@r>${thisID}`
                     customRegID = new RegExp(customRegID)
-
-                    // console.log(customRegID)
-                    // console.log("regexid: ", customRegID.exec(data)[1])
-                    // console.log("regexid: ", customRegID.exec(data)[2])
 
                     item.code = customRegID.exec(data)[2] // format avant de put ici
                     item.explication = customRegID.exec(data)[1]
@@ -72,15 +67,9 @@ function fileParser(file, _callback) {
         })
 
 
-        _callback(arrayOfItemCode)
-        // return arrayOfItemCode
+        _callback(arrayOfItemCode, writePath, fileName)
     })
-
 }
-
-
-// @<r100\s+([^@\n]+)\n\s*([\s\S]*?)\s*@r>100
-// /@<r100s+([^@\n]+)\n\s*([\s\S]*?)s*@r>100/
 
 
 // rah ejwe le code, a arranger avant de commit
@@ -95,13 +84,6 @@ class itemCode {
     getId() {
         return this.id;
     }
-}
-
-
-function formatter(itemCode) {
-    console.log(itemCode.code)
-    
-    return itemCode
 }
 
 
