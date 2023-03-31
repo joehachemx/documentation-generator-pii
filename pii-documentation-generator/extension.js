@@ -83,23 +83,32 @@ function activate(context) {
 			// let extractedData = fileParser.fileParser(filePath);
 			// fileToMD.convertToMDFile(extractedData)
 		}
-		// var currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath);
-
 	})
 
-		let gptAPI = vscode.commands.registerCommand("extension.gptAPI", async function () {
-			console.log("gpt API")
+	let gptAPI = vscode.commands.registerCommand("extension.gptAPI", async function () {
+		console.log("gpt API")
 
-			let editor = vscode.window.activeTextEditor;
+		let editor = vscode.window.activeTextEditor;
 
+		await vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: "Smart Comments ",
+			cancellable: false
+		  }, async (progress) => {
+			// simulate a long-running task
+			progress.report({ message: "Running GPT..." });
+			await new Promise(resolve => setTimeout(resolve, 100));
+		
 			let codeExplication = await gptController.runCompletion(editor.document.getText(editor.selection))
 
 			codeExplication = codeExplication.trim()
-
-
-
+		
+			// update the progress indicator
+			progress.report({ increment: 50, message: "Processing results..." });
+			await new Promise(resolve => setTimeout(resolve, 100));
+		
 			editor.edit(editBuilder => {
-
+			
 				let id = Math.floor(Math.random() * (100 - 0 + 1)) + 0
 				while (id in everyIDGenerated) {
 					id = Math.floor(Math.random() * (100 - 0 + 1)) + 0
@@ -112,37 +121,29 @@ function activate(context) {
 				} else {
 					codeExplication = checkLanguage() + " @<r" + `${id}` + " " + codeExplication
 				}
-	
-	
-	
-	
+
 				closingText = checkLanguage() + " @r>" + `${id}`
 				
 				let newText;
-	
+
 				if (editor.selection.start.line === editor.selection.end.line) {
 					newText = `${editor.document.getText(editor.selection)}` + `${codeExplication}` 
 				} else {
 					newText = `${codeExplication}` + '\n' + `${editor.document.getText(editor.selection)}` + '\n' + `${closingText}`
 				}
-				
 	
 				const selections = editor.selections; // to handle mutliple selection
 				for (const selection of selections) {
 					editBuilder.replace(selection, newText);
 				}
 	
-
 			})
-
-			
-
-
-
-
-
-
-		})
+		
+			// update the progress indicator
+			progress.report({ increment: 50, message: "Done!" });
+			await new Promise(resolve => setTimeout(resolve, 1000));
+		  })
+	})
   
 	// Register the command to the keyboard shortcut
 	context.subscriptions.push(disposable);
