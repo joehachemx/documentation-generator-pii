@@ -1,4 +1,8 @@
 const fs = require('fs');
+var dedent = require('dedent');
+const prettier = require("prettier");
+const vscode = require('vscode');
+const { format } = require('path');
 
 function fileParser(file, writePath, fileName ,_callback) {
     let arrayOfItemCode = []
@@ -58,7 +62,28 @@ function fileParser(file, writePath, fileName ,_callback) {
                     let customRegID = `@<r${thisID}\\s+([^@\n]+)\n\\s*([\\s\\S]*?)\\s*@r>${thisID}`
                     customRegID = new RegExp(customRegID)
 
-                    item.code = customRegID.exec(data)[2] // format avant de put ici
+                    let language = fileName.split(".").pop()
+
+
+                    let extractedCode = customRegID.exec(data)[2]
+                    
+                    try {
+                        extractedCode = removeComments(extractedCode, language)
+                    } catch (error) {
+                        console.log(error)
+                    }
+
+                    extractedCode = removeEmptyLines(extractedCode)
+
+                    // TODO: support more langus
+                    extractedCode = dedent(extractedCode)
+
+                    try {
+                        item.code = extractedCode
+                    } catch(error) {
+                        console.log(error)
+                    }
+                    
                     item.explication = customRegID.exec(data)[1]
                     
                     arrayOfItemCode.push(item)
@@ -85,6 +110,66 @@ class itemCode {
         return this.id;
     }
 }
+
+
+function checkLanguage(language) {
+	switch(language) {
+		case "py":
+			return "#"
+		case "ru":
+			return "#"
+		case "hs":
+			return "- -"
+        case "lhs":
+            return "- -"
+		case "r":
+			return "#"
+		case "erl":
+			return "%"
+        case "hrl":
+            return "%"
+		case "pl":
+			return "#"
+		case "html":
+			return null // waj3it ras for now
+		case "css":
+			return null // waj3it ras for now
+		default:
+			return "//"
+	}
+}
+
+function removeComments(code, language) {
+	switch(language) {
+		case "py":
+			return code.replace(/#.*/g, '')
+		case "ru":
+			return code.replace(/#.*/g, '')
+		case "hs":
+			return code.replace(/--.*/g, '')
+        case "lhs":
+            return code.replace(/--.*/g, '')
+		case "r":
+			return code.replace(/#.*/g, '')
+		case "erl":
+			return code.replace(/%.*/g, '')
+        case "hrl":
+            return code.replace(/%.*/g, '')
+		case "pl":
+			return code.replace(/#.*/g, '')
+		case "html":
+			return null // waj3it ras for now
+		case "css":
+			return null // waj3it ras for now
+		default:
+			return code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '')
+	}
+}
+
+function removeEmptyLines(str) {
+    return str.split(/\r?\n/).filter(line => line.trim() !== '').join('\n')
+}
+  
 
 
 module.exports = { fileParser };

@@ -79,7 +79,7 @@ function activate(context) {
 		fs.writeFileSync(`${vscode.workspace.workspaceFolders[0].uri.path}/markdownfile.md`,"")
 
 		for (let i = 0; i < files.length; i++) {
-			console.log(files[i])
+			// console.log(files[i])
 			let file = files[i].path
 			await fileParser.fileParser(file, vscode.workspace.workspaceFolders[0].uri.path, getFileName(file), fileToMD.convertToMDFile)
 		}
