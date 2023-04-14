@@ -12,7 +12,8 @@
   "activationEvents": [
     "onCommand:extension.showTextField",
     "onCommand:extension.callParserNConverter",
-    "onCommand:extension.gptAPI"
+    "onCommand:extension.gptAPI",
+    "onCommand:extension.createProjectInfoFile"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -40,6 +41,12 @@
         "key": "ctrl+g",
         "mac": "cmd+g",
         "linux": "ctrl+g"
+      },
+      {
+        "command": "extension.createProjectInfoFile",
+        "key": "ctrl+shift+i",
+        "mac": "cmd+shift+i",
+        "linux": "ctrl+shift+i"
       }
     ]
   },

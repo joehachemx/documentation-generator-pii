@@ -28,9 +28,3 @@ async function runCompletion (prompt) {
 
 
 module.exports = { runCompletion };
-
-/* TODO
-- clean code
-- fix .env and api key
-- penser comment realiser cette feature considerant c paid (chacun met son propre token??)
-*/

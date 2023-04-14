@@ -1,14 +1,10 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-var path = require("path");
 const fileParser = require('./Controllers/fileParser');
 const fileToMD = require('./Controllers/filetoMD');
 const fs = require("fs");
 const gptController = require('./Controllers/gptController');
-
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const folderParser = require('./Controllers/folderParser');
+const folderMD = require('./Controllers/convertToMdFolder');
 
 
 /**
@@ -17,11 +13,8 @@ const gptController = require('./Controllers/gptController');
 function activate(context) {
 	console.log('Extension is now active!');
   
-	// Register a command to display the text field
 	let disposable = vscode.commands.registerCommand("extension.showTextField", function () {
-		// let selection = new itemCode()
 		let editor = vscode.window.activeTextEditor;
-		// Show an input box to the user
 		vscode.window.showInputBox({
 		prompt: "Enter your text"
 		}).then(function (inputText) {			
@@ -57,14 +50,9 @@ function activate(context) {
 					for (const selection of selections) {
 						editBuilder.replace(selection, newText);
 					}
-
-				
 				}
-				
 			});
 		});
-
-
 	});
 
 	let callParserNConverter = vscode.commands.registerCommand("extension.callParserNConverter", async function () {
@@ -73,16 +61,20 @@ function activate(context) {
 		function getFileName(path) {
 			const pathArray = path.split('/');
 			return pathArray[pathArray.length - 1];
-		  }
+		}
+
+		const writePath = vscode.workspace.workspaceFolders[0].uri.path
 
 		const files = await vscode.workspace.findFiles('**/*.*', '**/node_modules/**');
+		
+		fs.writeFileSync(`${writePath}/markdownfile.md`,"")
 
-		fs.writeFileSync(`${vscode.workspace.workspaceFolders[0].uri.path}/markdownfile.md`,"")
+		// folder info if available
+		await folderParser.folderParser(`${writePath}/info.pii`, `${vscode.workspace.workspaceFolders[0].uri.path}/markdownfile.md`, folderMD.convertToMdFolder)
 
 		for (let i = 0; i < files.length; i++) {
-			// console.log(files[i])
 			let file = files[i].path
-			await fileParser.fileParser(file, vscode.workspace.workspaceFolders[0].uri.path, getFileName(file), fileToMD.convertToMDFile)
+			await fileParser.fileParser(file, writePath, getFileName(file), fileToMD.convertToMDFile)
 		}
 	})
 
@@ -145,15 +137,21 @@ function activate(context) {
 			await new Promise(resolve => setTimeout(resolve, 1000));
 		  })
 	})
+
+	let createProjectInfoFile = vscode.commands.registerCommand("extension.createProjectInfoFile", async function () {
+		console.log("creating project info file")
+
+		fs.writeFileSync(`${vscode.workspace.workspaceFolders[0].uri.path}/info.pii`, infoPiiText)
+	})
   
 	// Register the command to the keyboard shortcut
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(callParserNConverter);
 	context.subscriptions.push(gptAPI);
+	context.subscriptions.push(createProjectInfoFile);
   }
 
 
-// This method is called when your extension is deactivated
 function deactivate() {}
 
 module.exports = {
@@ -192,3 +190,6 @@ function checkLanguage() {
 }
 
 let everyIDGenerated = []
+
+let infoPiiText = 
+"@title=\"title\"\n\n@version=\"v 1.1.1\"\n@date=\"12/12/12\"\n\n@authors=\"x, y, ghada\"\n@mail=\"x@mail.com, y@mail.com, ghada@mail.com\"\n\n@description=\"this is a description\"\n\n@requirements=\"ios16, windows11\"\n\n@paragraph=\"this is a paragraph\""

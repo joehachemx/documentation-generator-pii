@@ -1,19 +1,19 @@
 const fs = require("fs");
 
-function convertToMdFolder(object) {
+function convertToMdFolder(object, path) {
     function heading(object) {
         if (object.title != undefined || object.version != undefined || object.title != undefined) {
-            fs.appendFileSync("manuscript.md", `<center>`)
+            fs.appendFileSync(`${path}`, `<center>`)
             if (object.title != undefined) {
-                fs.appendFileSync("manuscript.md", `<h1> ${object.title} </h1>`)
+                fs.appendFileSync(`${path}`, `<h1> ${object.title} </h1>`)
             }
             if (object.version != undefined) {
-                fs.appendFileSync("manuscript.md", `<h3> Version: ${object.version} </h3>`)
+                fs.appendFileSync(`${path}`, `<h3> Version: ${object.version} </h3>`)
             }
             if (object.date != undefined) {
-                fs.appendFileSync("manuscript.md", `<h4> ${object.date} </h4>`)
+                fs.appendFileSync(`${path}`, `<h4> ${object.date} </h4>`)
             }
-            fs.appendFileSync("manuscript.md", `</center> \n`)
+            fs.appendFileSync(`${path}`, `</center> \n`)
         }
     }
     
@@ -23,13 +23,13 @@ function convertToMdFolder(object) {
                     titre = "Authors";
                 } else {
                     titre = "Author";
-                }fs.appendFileSync("manuscript.md", `<h2> ${titre} : </h2> <br>`)
+                }fs.appendFileSync(`${path}`, `<h2> ${titre} : </h2> <br>`)
                 for (let i=0; i<object.authors.length; i++) {
                     if (object.mail[i] != null){
-                        fs.appendFileSync("manuscript.md",`\n\n * ${object.authors[i]}, ${object.mail[i]}`)
+                        fs.appendFileSync(`${path}`,`\n\n * ${object.authors[i]}, ${object.mail[i]}\n`)
                     }
                     else {
-                        fs.appendFileSync("manuscript.md",`\n\n * ${object.authors[i]}`)
+                        fs.appendFileSync(`${path}`,`\n\n * ${object.authors[i]}\n`)
                     }
                 }
         }
@@ -37,7 +37,7 @@ function convertToMdFolder(object) {
     
     function description(object) {
         if (object.description != undefined) {
-            fs.appendFileSync("manuscript.md",`\n\n<br> <h2> Description :</h2> <br> ${object.description}`)
+            fs.appendFileSync(`${path}`,`\n\n<br> <h2> Description :</h2> <br> ${object.description}\n`)
         }
     }
 
@@ -48,20 +48,19 @@ function convertToMdFolder(object) {
             } else {
                 titre = "Requirement";
             } 
-            fs.appendFileSync("manuscript.md", `\n<h2> <br>${titre} :</h2> <br>`)
+            fs.appendFileSync(`${path}`, `\n<h2> <br>${titre} :</h2> <br>\n`)
             for (let i=0; i<object.requirements.length; i++){
-                fs.appendFileSync("manuscript.md",`\n\n* ${object.requirements[i]}`)
+                fs.appendFileSync(`${path}`,`\n\n* ${object.requirements[i]}\n`)
             } 
         }
     }
 
     function paragraph(object) {
         if (object.paragraph != undefined) {
-            fs.appendFileSync("manuscript.md", `\n\n ${object.paragraph}`)
+            fs.appendFileSync(`${path}`, `\n\n ${object.paragraph}\n`)
         }
     }
 
-    fs.writeFileSync("manuscript.md", "") // c utiliser pr override existing data for testing
     heading(object)
     authors(object)
     description(object)
