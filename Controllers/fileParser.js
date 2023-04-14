@@ -96,9 +96,6 @@ function fileParser(file, writePath, fileName ,_callback) {
     })
 }
 
-
-// rah ejwe le code, a arranger avant de commit
-
 class itemCode {
     constructor(id, code, explication) {
       this.id = id; 
