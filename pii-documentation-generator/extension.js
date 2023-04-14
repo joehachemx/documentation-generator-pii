@@ -3,6 +3,8 @@
 const vscode = require('vscode');
 var path = require("path");
 const fileParser = require('./Controllers/fileParser');
+const fileToMD = require('./Controllers/filetoMD');
+const gptController = require('./Controllers/gptController');
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -21,12 +23,7 @@ function activate(context) {
 		// Show an input box to the user
 		vscode.window.showInputBox({
 		prompt: "Enter your text"
-		}).then(function (inputText) {
-		// Log the entered text to the console
-		// console.log("Entered text: " + inputText);
-			// selection.explication = inputText
-
-			
+		}).then(function (inputText) {			
 			editor.edit(editBuilder => {
 				if (inputText != undefined) {
 
@@ -81,16 +78,77 @@ function activate(context) {
 			// Get the file path from the URI
 			const filePath = uri.path;
 
-			console.log(filePath);
-			fileParser.fileParser(filePath);
-		}
-		// var currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath);
+			fileParser.fileParser(filePath, fileToMD.convertToMDFile)
 
+			// let extractedData = fileParser.fileParser(filePath);
+			// fileToMD.convertToMDFile(extractedData)
+		}
+	})
+
+	let gptAPI = vscode.commands.registerCommand("extension.gptAPI", async function () {
+		console.log("gpt API")
+
+		let editor = vscode.window.activeTextEditor;
+
+		await vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: "Smart Comments ",
+			cancellable: false
+		  }, async (progress) => {
+			// simulate a long-running task
+			progress.report({ message: "Running GPT..." });
+			await new Promise(resolve => setTimeout(resolve, 100));
+		
+			let codeExplication = await gptController.runCompletion(editor.document.getText(editor.selection))
+
+			codeExplication = codeExplication.trim()
+		
+			// update the progress indicator
+			progress.report({ increment: 50, message: "Processing results..." });
+			await new Promise(resolve => setTimeout(resolve, 100));
+		
+			editor.edit(editBuilder => {
+			
+				let id = Math.floor(Math.random() * (100 - 0 + 1)) + 0
+				while (id in everyIDGenerated) {
+					id = Math.floor(Math.random() * (100 - 0 + 1)) + 0
+				}
+				everyIDGenerated.push(id)
+	
+	
+				if (editor.selection.start.line === editor.selection.end.line) {
+					codeExplication = " " + checkLanguage() + " @/w" + `${id}` + " " +  codeExplication 
+				} else {
+					codeExplication = checkLanguage() + " @<r" + `${id}` + " " + codeExplication
+				}
+
+				closingText = checkLanguage() + " @r>" + `${id}`
+				
+				let newText;
+
+				if (editor.selection.start.line === editor.selection.end.line) {
+					newText = `${editor.document.getText(editor.selection)}` + `${codeExplication}` 
+				} else {
+					newText = `${codeExplication}` + '\n' + `${editor.document.getText(editor.selection)}` + '\n' + `${closingText}`
+				}
+	
+				const selections = editor.selections; // to handle mutliple selection
+				for (const selection of selections) {
+					editBuilder.replace(selection, newText);
+				}
+	
+			})
+		
+			// update the progress indicator
+			progress.report({ increment: 50, message: "Done!" });
+			await new Promise(resolve => setTimeout(resolve, 1000));
+		  })
 	})
   
 	// Register the command to the keyboard shortcut
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(callParserNConverter);
+	context.subscriptions.push(gptAPI);
   }
 
 
