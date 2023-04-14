@@ -4,6 +4,7 @@ const vscode = require('vscode');
 var path = require("path");
 const fileParser = require('./Controllers/fileParser');
 const fileToMD = require('./Controllers/filetoMD');
+const fs = require("fs");
 const gptController = require('./Controllers/gptController');
 
 // This method is called when your extension is activated
@@ -66,22 +67,22 @@ function activate(context) {
 
 	});
 
-	let callParserNConverter = vscode.commands.registerCommand("extension.callParserNConverter", function () {
+	let callParserNConverter = vscode.commands.registerCommand("extension.callParserNConverter", async function () {
 		console.log("calling parser n converter")
 
-		const editor = vscode.window.activeTextEditor;
+		function getFileName(path) {
+			const pathArray = path.split('/');
+			return pathArray[pathArray.length - 1];
+		  }
 
-		if (editor) {
-			// Get the URI of the current file
-			const uri = editor.document.uri;
+		const files = await vscode.workspace.findFiles('**/*.*', '**/node_modules/**');
 
-			// Get the file path from the URI
-			const filePath = uri.path;
+		fs.writeFileSync(`${vscode.workspace.workspaceFolders[0].uri.path}/markdownfile.md`,"")
 
-			fileParser.fileParser(filePath, fileToMD.convertToMDFile)
-
-			// let extractedData = fileParser.fileParser(filePath);
-			// fileToMD.convertToMDFile(extractedData)
+		for (let i = 0; i < files.length; i++) {
+			// console.log(files[i])
+			let file = files[i].path
+			await fileParser.fileParser(file, vscode.workspace.workspaceFolders[0].uri.path, getFileName(file), fileToMD.convertToMDFile)
 		}
 	})
 
