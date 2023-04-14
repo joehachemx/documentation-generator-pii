@@ -11,7 +11,8 @@
   ],
   "activationEvents": [
     "onCommand:extension.showTextField",
-    "onCommand:extension.callParserNConverter"
+    "onCommand:extension.callParserNConverter",
+    "onCommand:extension.gptAPI"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -33,6 +34,12 @@
         "key": "ctrl+shift+h",
         "mac": "cmd+shift+h",
         "linux": "ctrl+shift+h"
+      },
+      {
+        "command": "extension.gptAPI",
+        "key": "ctrl+g",
+        "mac": "cmd+g",
+        "linux": "ctrl+g"
       }
     ]
   },
@@ -55,6 +62,8 @@
   "dependencies": {
     "dedent": "^0.7.0",
     "dedent-js": "^1.0.1",
-    "prettier": "^2.8.7"
+    "prettier": "^2.8.7",
+    "dotenv": "^16.0.3",
+    "openai": "^3.2.1"
   }
 }
