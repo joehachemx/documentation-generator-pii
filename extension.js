@@ -91,7 +91,13 @@ function activate(context) {
 			// simulate a long-running task
 			progress.report({ message: "Running GPT..." });
 			await new Promise(resolve => setTimeout(resolve, 100));
-		
+			
+			if (editor.document.getText(editor.selection).trim() == "") {
+				progress.report({ increment: 100, message: "Error. Please select something." });
+				await new Promise(resolve => setTimeout(resolve, 100));
+				return
+			} 
+
 			let codeExplication = await gptController.runCompletion(editor.document.getText(editor.selection))
 
 			codeExplication = codeExplication.trim()
