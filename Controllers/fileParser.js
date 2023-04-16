@@ -17,34 +17,29 @@ function fileParser(file, writePath, fileName ,_callback) {
 
         const lines = data.split('\n');
     
-
+        let language = fileName.split(".").pop()
 
         lines.forEach((line) => {
             if (line.includes("@/w")) {
-                let reggg = /@\/?w(\d+)(.*?)$/
-                thisID = reggg.exec(line)[1]
+                let singleLineReg = /(.*)@\/w(\S+)\s*(.*)/
+
+                thisID = singleLineReg.exec(line)[2]
+                let singleLCode = singleLineReg.exec(line)[1].trim()
+                let singleLExplication = singleLineReg.exec(line)[3]
 
                 for (let i = 0; i < arrayOfItemCode.length; i++) {
                     if (arrayOfItemCode[i].getId() == thisID) {
-                        arrayOfItemCode[i].explication = reggg.exec(line)[2].trim()
+                        arrayOfItemCode[i].explication = singleLExplication
                     }
                 }
 
-                // prend le cas ou prend le cas ou on met ca avant de initialise code
-                // implement "if present"
-            }
+                let item = new itemCode(thisID)
 
-            if (line.includes("@/rw")) {
-                let g = /^([^@]*)@\/rw(.*)$/
-
-                let item = new itemCode()
-                item.code = g.exec(line)[1].trim()
-                item.explication = g.exec(line)[2]
+                item.code = removeComments(singleLCode, language)
+                item.explication = singleLExplication
 
                 arrayOfItemCode.push(item)
             }
-
-
 
             if (line.includes("@<r")) {
                 thisID = regStart.exec(line)[0]
@@ -61,8 +56,6 @@ function fileParser(file, writePath, fileName ,_callback) {
 
                     let customRegID = `@<r${thisID}\\s+([^@\n]+)\n\\s*([\\s\\S]*?)\\s*@r>${thisID}`
                     customRegID = new RegExp(customRegID)
-
-                    let language = fileName.split(".").pop()
 
 
                     let extractedCode = customRegID.exec(data)[2]
