@@ -63,17 +63,17 @@ function activate(context) {
 			return pathArray[pathArray.length - 1];
 		}
 
-		const writePath = vscode.workspace.workspaceFolders[0].uri.path
+		const writePath = vscode.workspace.workspaceFolders[0].uri.fsPath
 
 		const files = await vscode.workspace.findFiles('**/*.*', '**/node_modules/**');
 		
 		fs.writeFileSync(`${writePath}/markdownfile.md`,"")
 
 		// folder info if available
-		await folderParser.folderParser(`${writePath}/info.pii`, `${vscode.workspace.workspaceFolders[0].uri.path}/markdownfile.md`, folderMD.convertToMdFolder)
+		await folderParser.folderParser(`${writePath}/info.pii`, `${vscode.workspace.workspaceFolders[0].uri.fsPath}/markdownfile.md`, folderMD.convertToMdFolder)
 
 		for (let i = 0; i < files.length; i++) {
-			let file = files[i].path
+			let file = files[i].fsPath
 			await fileParser.fileParser(file, writePath, getFileName(file), fileToMD.convertToMDFile)
 		}
 	})
@@ -147,7 +147,7 @@ function activate(context) {
 	let createProjectInfoFile = vscode.commands.registerCommand("extension.createProjectInfoFile", async function () {
 		console.log("creating project info file")
 
-		fs.writeFileSync(`${vscode.workspace.workspaceFolders[0].uri.path}/info.pii`, infoPiiText)
+		fs.writeFileSync(`${vscode.workspace.workspaceFolders[0].uri.fsPath}/info.pii`, infoPiiText)
 	})
   
 	// Register the command to the keyboard shortcut
