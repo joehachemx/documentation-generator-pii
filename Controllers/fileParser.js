@@ -58,28 +58,33 @@ function fileParser(file, writePath, fileName ,_callback) {
                     customRegID = new RegExp(customRegID)
 
 
-                    let extractedCode = customRegID.exec(data)[2]
-                    
+                    let extractedCode = ""
                     try {
-                        extractedCode = removeComments(extractedCode, language)
-                    } catch (error) {
-                        console.log(error)
-                    }
-
-                    extractedCode = removeEmptyLines(extractedCode)
-
-                    // TODO: support more langus
-                    extractedCode = dedent(extractedCode)
-
-                    try {
-                        item.code = extractedCode
-                    } catch(error) {
-                        console.log(error)
+                        extractedCode = customRegID.exec(data)[2]
+                        try {
+                            extractedCode = removeComments(extractedCode, language)
+                        } catch (error) {
+                            console.log(error)
+                        }
+    
+                        extractedCode = removeEmptyLines(extractedCode)
+    
+                        // TODO: support more langus
+                        extractedCode = dedent(extractedCode)
+    
+                        try {
+                            item.code = extractedCode
+                        } catch(error) {
+                            console.log(error)
+                        }
+                        
+                        item.explication = customRegID.exec(data)[1]
+                        
+                        arrayOfItemCode.push(item)
+                    } catch(error){
+                        console.log("Error here")
                     }
                     
-                    item.explication = customRegID.exec(data)[1]
-                    
-                    arrayOfItemCode.push(item)
                 }
             }
         })
