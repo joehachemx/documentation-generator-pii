@@ -1,4 +1,4 @@
-# pii-documentation-generator
+# documentation-generator-pii 🧑‍💻
 
 Source code for the documentation-generator-pii extension on VSCode.
 
@@ -6,42 +6,39 @@ Source code for the documentation-generator-pii extension on VSCode.
 
 ## Features
 
-- Generates a documentation from comments in seconds
-- Documentation in Markdown format only (for now)
-- Supports many languages (mej d'enumerer)
-- Smart comments (ChatGPT integration)
+- Generates a documentation from comments in seconds 
+- Documentation in Markdown format only
+- Supports many languages ( Python, Javascript, C++, C#,  Ruby ... )
+- Smart comments ( ChatGPT integration )
 
 ## Benefits
 
-ecrire
+- Faster documentation creation
+- Consistent documentation style
+- Improved code readability
+- Increased productivity and time saving  
 
 ## Requirements
 
-- VSCode
+- VS Code
+- Node.js
 
 ## Installation
 
 Search for it in the extension marketplace or click here. *link here*
 
-
-## Release Notes
-
-- put here what was added bi ekhir release
-
 ## Known Issues
 
-:(
+kifik
 
 ## Limitations
 
 ecrire wen c pas bien
 
 ## TODO
-- put here quoi faire apres
+- Support HTML and PDF
 
 
 ## For more information
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
