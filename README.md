@@ -1,44 +1,66 @@
-# documentation-generator-pii 🧑‍💻
+# documentation-generator-pii
+
+![Logo](./Assets/piiLogo.png)
 
 Source code for the documentation-generator-pii extension on VSCode.
 
-*Ajouter emojis images et plus dinfo quand ele jlede*
+<br>
 
-## Features
+## 🎉 Features
 
-- Generates a documentation from comments in seconds 
+- Generates a documentation from custom comments in seconds 
 - Documentation in Markdown format only
 - Supports many languages ( Python, Javascript, C++, C#,  Ruby ... )
 - Smart comments ( ChatGPT integration )
 
-## Benefits
+<br>
+
+## 💪 Benefits
 
 - Faster documentation creation
-- Consistent documentation style
 - Improved code readability
 - Increased productivity and time saving  
 
-## Requirements
+<br>
+
+## 🛠 Requirements
 
 - VS Code
 - Node.js
 
-## Installation
+<br>
+
+
+## 📹 Demo
+
+Insert gif or link to demo
+
+<br>
+
+## 💻 Installation
 
 Search for it in the extension marketplace or click here. *link here*
 
-## Known Issues
+<br>
+
+## 🐛 Known Issues
 
 kifik
 
-## Limitations
+<br>
+
+## 🙅‍♂️ Limitations
 
 ecrire wen c pas bien
 
-## TODO
+<br>
+
+## 📝 TODO
 - Support HTML and PDF
 
+<br>
 
-## For more information
+
+## ℹ️ For more information
 
 
