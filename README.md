@@ -1,5 +1,3 @@
-# documentation-generator-pii
-
 ![Logo](./Assets/piiLogo.png)
 
 Source code for the documentation-generator-pii extension on VSCode.
