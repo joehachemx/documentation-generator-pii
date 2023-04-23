@@ -3,12 +3,12 @@ var dedent = require('dedent');
 const prettier = require("prettier");
 const vscode = require('vscode');
 const { format } = require('path');
+const { privateEncrypt } = require('crypto');
 
 function fileParser(file, writePath, fileName ,_callback) {
     let arrayOfItemCode = []
 
     let regStart = /(?<=@<r)\w+/
-    let regEnd = /(?<=@r>)\w+/
 
     fs.readFile(file, 'utf-8', (err, data) => {
         if (err) throw err;
@@ -36,9 +36,12 @@ function fileParser(file, writePath, fileName ,_callback) {
                 let item = new itemCode(thisID)
 
                 item.code = removeComments(singleLCode, language)
+
                 item.explication = singleLExplication
 
-                arrayOfItemCode.push(item)
+                if (item.code != "") {
+                    arrayOfItemCode.push(item)
+                }
             }
 
             if (line.includes("@<r")) {
@@ -59,6 +62,7 @@ function fileParser(file, writePath, fileName ,_callback) {
 
 
                     let extractedCode = ""
+
                     try {
                         extractedCode = customRegID.exec(data)[2]
                         try {
@@ -71,7 +75,6 @@ function fileParser(file, writePath, fileName ,_callback) {
     
                         // TODO: support more langus
                         extractedCode = dedent(extractedCode)
-    
                         try {
                             item.code = extractedCode
                         } catch(error) {
