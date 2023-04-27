@@ -57,7 +57,7 @@ function convertToMdFolder(object, path) {
 
     function paragraph(object) {
         if (object.paragraph != undefined) {
-            fs.appendFileSync(`${path}`,`\n\n<br> <h2> Paragraph :</h2> <br> ${object.paragraph}\n`)
+            fs.appendFileSync(`${path}`,`\n\n<br> <h2> Paragraph :</h2> <br> ${object.paragraph} <br>\n`)
         }
     }
 
