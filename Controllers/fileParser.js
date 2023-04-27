@@ -5,7 +5,7 @@ const vscode = require('vscode');
 const { format } = require('path');
 const { privateEncrypt } = require('crypto');
 
-function fileParser(file, writePath, fileName ,_callback) {
+async function fileParser(file, writePath, fileName ,_callback) {
     let arrayOfItemCode = []
 
     let regStart = /(?<=@<r)\w+/

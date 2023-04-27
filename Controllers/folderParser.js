@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-function folderParser(file, writeToFile, _callback) {
+async function folderParser(file, writeToFile, _callback) {
     let objectKeyReg = /@(\w+)\b/
     
     let object = {}

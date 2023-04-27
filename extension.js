@@ -54,7 +54,7 @@ function activate(context) {
 			});
 		});
 	});
-
+    
 	let callParserNConverter = vscode.commands.registerCommand("extension.callParserNConverter", async function () {
 		console.log("calling parser n converter")
 
@@ -65,8 +65,8 @@ function activate(context) {
 
 		const writePath = vscode.workspace.workspaceFolders[0].uri.fsPath
 
-		const files = await vscode.workspace.findFiles('**/*.*', '**/node_modules/**');
-		
+		let files = await vscode.workspace.findFiles('**/*.*', '**/node_modules/**');
+		files = files.sort()
 		fs.writeFileSync(`${writePath}/markdownfile.md`,"")
 
 		// folder info if available
@@ -74,6 +74,7 @@ function activate(context) {
 
 		for (let i = 0; i < files.length; i++) {
 			let file = files[i].fsPath
+			console.log(file)
 			await fileParser.fileParser(file, writePath, getFileName(file), fileToMD.convertToMDFile)
 		}
 	})
