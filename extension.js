@@ -12,12 +12,12 @@ const folderMD = require('./Controllers/convertToMdFolder');
  */
 function activate(context) {
 	console.log('Extension is now active!');
-  
+
 	let disposable = vscode.commands.registerCommand("extension.showTextField", function () {
 		let editor = vscode.window.activeTextEditor;
 		vscode.window.showInputBox({
-		prompt: "Enter your text"
-		}).then(function (inputText) {			
+			prompt: "Enter your text"
+		}).then(function (inputText) {
 			editor.edit(editBuilder => {
 				if (inputText != undefined) {
 
@@ -29,22 +29,22 @@ function activate(context) {
 
 
 					if (editor.selection.start.line === editor.selection.end.line) {
-						inputText = " " + checkLanguage() + " @/w" + `${id}` + " " +  inputText 
+						inputText = " " + checkLanguage() + " @/w" + `${id}` + " " + inputText
 					} else {
 						inputText = checkLanguage() + " @<r" + `${id}` + " " + inputText
 					}
 
 
 					closingText = checkLanguage() + " @r>" + `${id}`
-					
+
 					let newText;
-	
+
 					if (editor.selection.start.line === editor.selection.end.line) {
-						newText = `${editor.document.getText(editor.selection)}` + `${inputText}` 
+						newText = `${editor.document.getText(editor.selection)}` + `${inputText}`
 					} else {
 						newText = `${inputText}` + '\n' + `${editor.document.getText(editor.selection)}` + '\n' + `${closingText}`
 					}
-					
+
 
 					const selections = editor.selections; // to handle mutliple selection
 					for (const selection of selections) {
@@ -54,7 +54,7 @@ function activate(context) {
 			});
 		});
 	});
-    
+
 	let callParserNConverter = vscode.commands.registerCommand("extension.callParserNConverter", async function () {
 		console.log("calling parser n converter")
 
@@ -67,7 +67,7 @@ function activate(context) {
 
 		let files = await vscode.workspace.findFiles('**/*.*', '**/node_modules/**');
 		files = files.sort()
-		fs.writeFileSync(`${writePath}/markdownfile.md`,"")
+		fs.writeFileSync(`${writePath}/markdownfile.md`, "")
 
 		// folder info if available
 		async function processFolder() {
@@ -80,24 +80,24 @@ function activate(context) {
 				console.log(e)
 			}
 		}
-		
+
 		processFolder()
 
 		async function processFiles() {
 			for (let i = 0; i < files.length; i++) {
-			  let file = files[i].fsPath;
-			  try {
-				const arrayOfItemCode = await fileParser.fileParser(file, writePath, getFileName(file));
-				if (arrayOfItemCode != undefined) {
-				  await fileToMD.convertToMDFile(arrayOfItemCode, writePath, getFileName(file));
+				let file = files[i].fsPath;
+				try {
+					const arrayOfItemCode = await fileParser.fileParser(file, writePath, getFileName(file));
+					if (arrayOfItemCode != undefined) {
+						await fileToMD.convertToMDFile(arrayOfItemCode, writePath, getFileName(file));
+					}
+				} catch (e) {
+					console.log(e);
 				}
-			  } catch (e) {
-				console.log(e);
-			  }
 			}
-		  }
-		  
-		  processFiles();
+		}
+
+		processFiles();
 	})
 
 	let gptAPI = vscode.commands.registerCommand("extension.gptAPI", async function () {
@@ -107,63 +107,63 @@ function activate(context) {
 
 		await vscode.window.withProgress({
 			location: vscode.ProgressLocation.Notification,
-			title: "Smart Comments ",
+			title: "Smart Comments",
 			cancellable: false
-		  }, async (progress) => {
+		}, async (progress) => {
 			// simulate a long-running task
 			progress.report({ message: "Running GPT..." });
 			await new Promise(resolve => setTimeout(resolve, 100));
-			
+
 			if (editor.document.getText(editor.selection).trim() == "") {
 				progress.report({ increment: 100, message: "Error. Please select something." });
 				await new Promise(resolve => setTimeout(resolve, 100));
 				return
-			} 
+			}
 
 			let codeExplication = await gptController.runCompletion(editor.document.getText(editor.selection))
 
 			codeExplication = codeExplication.trim()
-		
+
 			// update the progress indicator
 			progress.report({ increment: 50, message: "Processing results..." });
 			await new Promise(resolve => setTimeout(resolve, 100));
-		
+
 			editor.edit(editBuilder => {
-			
+
 				let id = Math.floor(Math.random() * (100 - 0 + 1)) + 0
 				while (id in everyIDGenerated) {
 					id = Math.floor(Math.random() * (100 - 0 + 1)) + 0
 				}
 				everyIDGenerated.push(id)
-	
-	
+
+
 				if (editor.selection.start.line === editor.selection.end.line) {
-					codeExplication = " " + checkLanguage() + " @/w" + `${id}` + " " +  codeExplication 
+					codeExplication = " " + checkLanguage() + " @/w" + `${id}` + " " + codeExplication
 				} else {
 					codeExplication = checkLanguage() + " @<r" + `${id}` + " " + codeExplication
 				}
 
 				closingText = checkLanguage() + " @r>" + `${id}`
-				
+
 				let newText;
 
 				if (editor.selection.start.line === editor.selection.end.line) {
-					newText = `${editor.document.getText(editor.selection)}` + `${codeExplication}` 
+					newText = `${editor.document.getText(editor.selection)}` + `${codeExplication}`
 				} else {
 					newText = `${codeExplication}` + '\n' + `${editor.document.getText(editor.selection)}` + '\n' + `${closingText}`
 				}
-	
+
 				const selections = editor.selections; // to handle mutliple selection
 				for (const selection of selections) {
 					editBuilder.replace(selection, newText);
 				}
-	
+
 			})
-		
+
 			// update the progress indicator
 			progress.report({ increment: 50, message: "Done!" });
 			await new Promise(resolve => setTimeout(resolve, 1000));
-		  })
+		})
 	})
 
 	let createProjectInfoFile = vscode.commands.registerCommand("extension.createProjectInfoFile", async function () {
@@ -171,16 +171,16 @@ function activate(context) {
 
 		fs.writeFileSync(`${vscode.workspace.workspaceFolders[0].uri.fsPath}/info.pii`, infoPiiText)
 	})
-  
+
 	// Register the command to the keyboard shortcut
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(callParserNConverter);
 	context.subscriptions.push(gptAPI);
 	context.subscriptions.push(createProjectInfoFile);
-  }
+}
 
 
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
 	activate,
@@ -191,11 +191,11 @@ function checkLanguage() {
 	// si preferable law zabatit built in mais ca marchait pas pr aucune raison
 	// a revoir
 
-    const editor = vscode.window.activeTextEditor;
+	const editor = vscode.window.activeTextEditor;
 	const document = editor.document;
 	const language = document.languageId
 
-	switch(language) {
+	switch (language) {
 		case "python":
 			return "#"
 		case "ruby":
@@ -219,5 +219,5 @@ function checkLanguage() {
 
 let everyIDGenerated = []
 
-let infoPiiText = 
-"@title=\"title\"\n\n@version=\"v 1.1.1\"\n@date=\"12/12/12\"\n\n@authors=\"x, y, ghada\"\n@mail=\"x@mail.com, y@mail.com, ghada@mail.com\"\n\n@description=\"this is a description\"\n\n@requirements=\"ios16, windows11\"\n\n@paragraph=\"this is a paragraph\""
+let infoPiiText =
+	"@title=\"title\"\n\n@version=\"v 1.1.1\"\n@date=\"12/12/12\"\n\n@authors=\"x, y, ghada\"\n@mail=\"x@mail.com, y@mail.com, ghada@mail.com\"\n\n@description=\"this is a description\"\n\n@requirements=\"ios16, windows11\"\n\n@paragraph=\"this is a paragraph\""

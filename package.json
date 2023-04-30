@@ -1,8 +1,8 @@
 {
-  "name": "pii-documentation-generator",
-  "displayName": "pii-documentation-generator",
-  "description": "",
-  "version": "0.0.1",
+  "name": "documentation-generator-pii",
+  "displayName": "Documentation Generator PII",
+  "description": "Generates a documentation from comments + GPT integration for smart comments",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -48,7 +48,17 @@
         "mac": "cmd+shift+i",
         "linux": "ctrl+shift+i"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Documentation Generator PII",
+      "properties": {
+        "documentation-generator-pii.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key"
+        }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint .",

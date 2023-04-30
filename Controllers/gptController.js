@@ -1,12 +1,16 @@
 const { Configuration, OpenAIApi } = require("openai");
-require("dotenv").config()
+const vscode = require('vscode');
+
+const config = vscode.workspace.getConfiguration('documentation-generator-pii');
+const apiKey = config.get('apiKey');
 
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: apiKey,
 });
+
 const openai = new OpenAIApi(configuration);
 
-async function runCompletion (prompt) {
+async function runCompletion(prompt) {
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: `
@@ -22,7 +26,6 @@ async function runCompletion (prompt) {
     max_tokens: 1000,
   })
 
-  
   return completion.data.choices[0].text
 }
 
