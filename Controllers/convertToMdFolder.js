@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-function convertToMdFolder(object, path) {
+async function convertToMdFolder(object, path) {
     function heading(object) {
         if (object.title != undefined || object.version != undefined || object.title != undefined) {
             fs.appendFileSync(`${path}`, `<center>`)
@@ -24,7 +24,7 @@ function convertToMdFolder(object, path) {
                 } else {
                     titre = "Author";
                 }
-                fs.appendFileSync(`${path}`, `<h2> 👨‍💻 ${titre} </h2> <br>`)
+                fs.appendFileSync(`${path}`, `<h2> 👨‍💻 ${titre} </h2>`)
                 for (let i=0; i<object.authors.length; i++) {
                     if (object.mail[i] != null){
                         fs.appendFileSync(`${path}`,`\n\n * ${object.authors[i]}, ${object.mail[i]}\n`)
@@ -38,7 +38,7 @@ function convertToMdFolder(object, path) {
     
     function description(object) {
         if (object.description != undefined) {
-            fs.appendFileSync(`${path}`,`\n\n<br> <h2> 📝 Description </h2> <br> ${object.description}\n`)
+            fs.appendFileSync(`${path}`,`\n\n<br> <h2> 📝 Description </h2> ${object.description}\n`)
         }
     }
 
@@ -58,7 +58,7 @@ function convertToMdFolder(object, path) {
 
     function paragraph(object) {
         if (object.paragraph != undefined) {
-            fs.appendFileSync(`${path}`,`\n\n<br> <h2> Paragraph :</h2> <br> ${object.paragraph} <br>\n`)
+            fs.appendFileSync(`${path}`,`\n\n<br> <h2> Paragraph</h2> \n ${object.paragraph} <br>\n`)
         }
     }
 
@@ -68,6 +68,7 @@ function convertToMdFolder(object, path) {
     requirements(object)
     paragraph(object)
     fs.appendFileSync(`${path}`, "<br>\n\n")
+    console.log("info done")
 }
 
 module.exports = { convertToMdFolder };
