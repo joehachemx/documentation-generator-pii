@@ -1,11 +1,16 @@
 {
   "name": "documentation-generator-pii",
   "displayName": "Documentation Generator PII",
+  "publisher": "joehachem",
   "description": "Generates a documentation from comments + GPT integration for smart comments",
   "version": "1.0.0",
   "engines": {
     "vscode": "^1.75.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joehachemx/documentation-generator-pii.git"
+},
   "categories": [
     "Other"
   ],
