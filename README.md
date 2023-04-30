@@ -1,4 +1,4 @@
-![Logo](./Assets/piiLogo.png)
+![Logo](./Assets/projectLogo.png)
 
 Source code for the documentation-generator-pii extension on VSCode.
 
@@ -39,22 +39,31 @@ Insert gif or link to demo
 
 Search for it in the extension marketplace or click here. *link here*
 
+### Smart Comments Integration
+Open the settings view, search for the extension and paste your own API token. You might need to relaunch the extension afterwards.
+
 <br>
 
 ## 🐛 Known Issues
 
-kifik
+- Formatting bug on some functions
+- Parser bugs if the language comment symbol is used in a code snippet
+- Comment ID generation might lag
 
 <br>
 
 ## 🙅‍♂️ Limitations
 
-ecrire wen c pas bien
+- Code becomes unreadable if a toddlers uses the extension
+- Syntax of custom comments hard not admirable
+- We need custom comments
 
 <br>
 
 ## 📝 TODO
 - Support HTML and PDF
+- More designs
+- Bug fixes
 
 <br>
 
