@@ -54,7 +54,7 @@ function activate(context) {
 			});
 		});
 	});
-
+    
 	let callParserNConverter = vscode.commands.registerCommand("extension.callParserNConverter", async function () {
 		console.log("calling parser n converter")
 
@@ -65,17 +65,42 @@ function activate(context) {
 
 		const writePath = vscode.workspace.workspaceFolders[0].uri.fsPath
 
-		const files = await vscode.workspace.findFiles('**/*.*', '**/node_modules/**');
-		
+		let files = await vscode.workspace.findFiles('**/*.*', '**/node_modules/**');
+		files = files.sort()
 		fs.writeFileSync(`${writePath}/markdownfile.md`,"")
 
 		// folder info if available
-		await folderParser.folderParser(`${writePath}/info.pii`, `${vscode.workspace.workspaceFolders[0].uri.fsPath}/markdownfile.md`, folderMD.convertToMdFolder)
-
-		for (let i = 0; i < files.length; i++) {
-			let file = files[i].fsPath
-			await fileParser.fileParser(file, writePath, getFileName(file), fileToMD.convertToMDFile)
+		async function processFolder() {
+			try {
+				const folderData = await folderParser.folderParser(`${writePath}/info.pii`)
+				if (folderData != undefined) {
+					await folderMD.convertToMdFolder(folderData, `${vscode.workspace.workspaceFolders[0].uri.fsPath}/markdownfile.md`)
+				}
+			} catch (e) {
+				console.log(e)
+			}
 		}
+		
+		processFolder()
+
+		async function processFiles() {
+			for (let i = 0; i < files.length; i++) {
+			  let file = files[i].fsPath;
+			  console.log("parsing this", file);
+		  
+			  try {
+				const arrayOfItemCode = await fileParser.fileParser(file, writePath, getFileName(file));
+				console.log("this is array", arrayOfItemCode);
+				if (arrayOfItemCode != undefined) {
+				  await fileToMD.convertToMDFile(arrayOfItemCode, writePath, getFileName(file));
+				}
+			  } catch (e) {
+				console.log(e);
+			  }
+			}
+		  }
+		  
+		  processFiles();
 	})
 
 	let gptAPI = vscode.commands.registerCommand("extension.gptAPI", async function () {

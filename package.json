@@ -67,10 +67,11 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@vscode/vscode-languagedetection": "^1.0.22",
     "dedent": "^0.7.0",
     "dedent-js": "^1.0.1",
-    "prettier": "^2.8.7",
     "dotenv": "^16.0.3",
-    "openai": "^3.2.1"
+    "openai": "^3.2.1",
+    "prettier": "^2.8.7"
   }
 }
