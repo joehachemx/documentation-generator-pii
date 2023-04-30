@@ -86,11 +86,8 @@ function activate(context) {
 		async function processFiles() {
 			for (let i = 0; i < files.length; i++) {
 			  let file = files[i].fsPath;
-			  console.log("parsing this", file);
-		  
 			  try {
 				const arrayOfItemCode = await fileParser.fileParser(file, writePath, getFileName(file));
-				console.log("this is array", arrayOfItemCode);
 				if (arrayOfItemCode != undefined) {
 				  await fileToMD.convertToMDFile(arrayOfItemCode, writePath, getFileName(file));
 				}
