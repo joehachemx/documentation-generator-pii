@@ -72,9 +72,11 @@ function fileParser(file, writePath, fileName ,_callback) {
                         }
     
                         extractedCode = removeEmptyLines(extractedCode)
-    
+
                         // TODO: support more langus
                         extractedCode = dedent(extractedCode)
+                        
+                        
                         try {
                             item.code = extractedCode
                         } catch(error) {
