@@ -71,8 +71,7 @@ function fileParser(file, writePath, fileName) {
 
                             extractedCode = removeEmptyLines(extractedCode);
 
-                            // TODO: support more langus
-                            extractedCode = dedent(extractedCode);
+                            // TODO: format code better
 
                             try {
                                 item.code = extractedCode;
